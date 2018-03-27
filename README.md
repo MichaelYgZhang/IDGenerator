@@ -14,3 +14,20 @@
 - 平均延迟和TP999延迟都要尽可能低；
 - 可用性5个9；
 - 高QPS。
+
+##### 架构设计
+
+- ![架构](https://raw.githubusercontent.com/MichaelYgZhang/michaelygzhang.github.io/master/images/IDGenerator.png)
+
+
+#### 核心思路
+- 分布式Redis集群(Master-Slave),每个Redis集群分别产生不同的Id序列; 每个Redis起点不同步长一样,比如3个Reids节点则产生序列号如下,步长3, 高效, 热Key分别在多台集群中产生:
+
+
+节点| 第1次生成数据 | 第2次生成数据 | 第3次生成数据 | 第4次生成数据 |..... |
+----|----|-----|-----|-----|----|
+Redis1-Master| 0 | 3 | 6 | 9| ... |
+Redis2-Master| 1 | 4 | 7 |10| ... |
+Redis3-Master| 2 | 5 | 8 |11| ... |
+
+- TODO
